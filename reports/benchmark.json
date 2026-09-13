@@ -1,73 +1,73 @@
 {
-  "measured_on": "2026-09-13",
+  "measured_on": "2026-09-14",
   "python": "3.9.6",
   "platform": "macOS-26.6.2-arm64-arm-64bit",
   "repeats": 7,
   "method": "New Python process each time; sequential scans; OS filesystem cache not cleared; no LLM calls.",
   "timing": {
     "1": {
-      "median_ms": 33.809,
-      "max_ms": 36.581,
+      "median_ms": 33.787,
+      "max_ms": 37.051,
       "stdout_bytes": 35
     },
     "100": {
-      "median_ms": 48.604,
-      "max_ms": 54.009,
+      "median_ms": 46.39,
+      "max_ms": 49.235,
       "stdout_bytes": 37
     },
     "1000": {
-      "median_ms": 146.578,
-      "max_ms": 159.908,
+      "median_ms": 137.608,
+      "max_ms": 148.203,
       "stdout_bytes": 38
     }
   },
   "index_timing": {
     "1": {
-      "median_ms": 52.544,
-      "max_ms": 82.224,
+      "median_ms": 38.539,
+      "max_ms": 44.032,
       "stdout_bytes": 91
     },
     "100": {
-      "median_ms": 38.43,
-      "max_ms": 38.879,
+      "median_ms": 44.07,
+      "max_ms": 48.436,
       "stdout_bytes": 95
     },
     "1000": {
-      "median_ms": 80.328,
-      "max_ms": 82.754,
+      "median_ms": 80.386,
+      "max_ms": 80.644,
       "stdout_bytes": 97
     }
   },
   "format_with_index_timing": {
     "1": {
-      "median_ms": 40.008,
-      "max_ms": 44.755,
+      "median_ms": 40.175,
+      "max_ms": 41.612,
       "stdout_bytes": 35
     },
     "100": {
-      "median_ms": 38.895,
-      "max_ms": 42.214,
+      "median_ms": 46.769,
+      "max_ms": 48.828,
       "stdout_bytes": 35
     },
     "1000": {
-      "median_ms": 80.412,
-      "max_ms": 88.683,
+      "median_ms": 80.609,
+      "max_ms": 80.892,
       "stdout_bytes": 35
     }
   },
   "authoring_cli_ms": {
-    "new_median": 33.961,
-    "format_and_lint_median": 34.46
+    "new_median": 33.777,
+    "format_and_lint_median": 34.359
   },
   "input_proxy": {
     "encoding": "o200k_base (proxy, not a claim about the active model tokenizer)",
     "components": {
-      "skill": 403,
+      "skill": 382,
       "generated_template_and_path": 75,
       "validation_stdout": 13,
       "command_text": 39
     },
-    "skill_flow_total": 530,
+    "skill_flow_total": 509,
     "comparison": {
       "short_adr": {
         "one_existing_adr": 82,

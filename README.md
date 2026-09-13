@@ -2,7 +2,7 @@
 
 ADR（Architecture Decision Record）を小さなテンプレートで作成し、形式・状態・Proposedの滞留を検証するCodex skill。Python 3.9以上の標準ライブラリだけで動く。通常実行にはパッケージ導入・ネットワーク・LLMによる全文検査を必要としない。
 
-[Nygard](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)、[MADR 4.0.0](https://github.com/adr/madr/blob/4.0.0/template/adr-template.md)、[ADR形式の公式紹介](https://adr.github.io/adr-templates/)を調査し、Nygardの構成を基にした独自の軽量プロファイルを採用した。[調査と選定理由](skills/write-adr/references/research.md)を参照。
+[Nygard](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)、[MADR 4.0.0](https://github.com/adr/madr/blob/4.0.0/template/adr-template.md)、[ADR形式の公式紹介](https://adr.github.io/adr-templates/)を調査し、Nygardの構成を基にした独自の軽量プロファイルを採用した。開発時の[調査と選定理由](docs/adr-format-research.md)は配布するskillの外に保存している。
 
 ## 使う
 
@@ -13,7 +13,7 @@ mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
 ln -s "$PWD/skills/write-adr" "${CODEX_HOME:-$HOME/.codex}/skills/write-adr"
 ```
 
-Codexで `$write-adr` を指定するか、ADR作成を依頼する。skillが読み込まれたら、生成ツールで採番し、出力された雛形を埋め、整形・検証をまとめて実行する。[SKILL.md](skills/write-adr/SKILL.md)には通常作業に必要な短い指示だけを置き、調査資料・詳細仕様は必要時だけ読む。
+Codexで `$write-adr` を指定するか、ADR作成を依頼する。skillが読み込まれたら、生成ツールで採番し、出力された雛形を埋め、整形・検証をまとめて実行する。[SKILL.md](skills/write-adr/SKILL.md)には通常作業に必要な短い指示だけを置き、詳細仕様は必要時だけ読む。
 
 CLI単体でも利用可能。以下はリポジトリのルートで実行する例。
 
@@ -55,23 +55,23 @@ Context内の英語見出し `Problem to Solve` と `Considered Options and Trad
 
 ## 速度とLLM入力コスト
 
-[測定結果](reports/benchmark.json)（2026-09-13、macOS arm64、Python 3.9.6、7回の中央値）。毎回Pythonプロセスを新規起動し、OSのファイルキャッシュは消去していない。
+[測定結果](reports/benchmark.json)（2026-09-14、macOS arm64、Python 3.9.6、7回の中央値）。毎回Pythonプロセスを新規起動し、OSのファイルキャッシュは消去していない。
 
 | 処理 | 中央値 |
 | --- | ---: |
 | 1 ADRのlint | 33.8 ms |
-| 100 ADRのlint | 48.6 ms |
-| 1,000 ADRのlint | 146.6 ms |
-| 新規雛形の生成 | 34.0 ms |
-| 1 ADRの整形＋lint | 34.5 ms |
-| 1,000 ADRの一覧生成・同期 | 80.3 ms |
-| 1 ADRの整形＋同じディレクトリの1,000件の一覧同期 | 80.4 ms |
+| 100 ADRのlint | 46.4 ms |
+| 1,000 ADRのlint | 137.6 ms |
+| 新規雛形の生成 | 33.8 ms |
+| 1 ADRの整形＋lint | 34.4 ms |
+| 1,000 ADRの一覧生成・同期 | 80.4 ms |
+| 1 ADRの整形＋同じディレクトリの1,000件の一覧同期 | 80.6 ms |
 
 一覧計測は初回の生成と生成済み一覧の照合を含む。件数ごとの揺らぎには実行時の負荷が影響する。
 
 正常出力は1行（1,000件でも38 bytes）、エラーは既定20件まで。lintは変更ファイルだけを検査できる。formatは一覧更新のため同じディレクトリの各ADRの先頭も読むが、表をLLMには出力しない。文書をキャッシュしないため、前回の結果を再利用して提案の経過日数を見落とすこともない。
 
-`o200k_base`による入力量の参考値では、skill本文403 tokens、生成された雛形等75、検証結果13、コマンド文字列39、計530 tokens。共通の判断材料と完成ADRは両方式から除外した。
+`o200k_base`による入力量の参考値では、skill本文382 tokens、生成された雛形等75、検証結果13、コマンド文字列39、計509 tokens。共通の判断材料と完成ADRは両方式から除外した。
 
 | 既存ADRを直接読む比較例 | 1件 | 3件 | 10件 |
 | --- | ---: | ---: | ---: |

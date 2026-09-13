@@ -13,6 +13,6 @@ description: ADRを作成・更新し、テンプレート・状態・提案滞�
 
 フロントマターのproposed-onは提案開始日。既定30日以上のProposedは報告し、日付・状態の変更で隠さない。閾値指定は `--max-proposed-days N`。
 
-状態変更・詳細仕様は [format.md](references/format.md)。別形式を無断変換しない。形式の根拠は必要時のみ [research.md](references/research.md) を読む。
+状態変更・詳細仕様は [format.md](references/format.md)。別形式を無断変換しない。
 
 識別子は `ADR-001`、見出しは `# ADR-001: Title`。手動編集・改名・削除後の一覧更新は `python3 <tool> index <保存先>`、更新漏れの検査は同コマンドに `--check`。

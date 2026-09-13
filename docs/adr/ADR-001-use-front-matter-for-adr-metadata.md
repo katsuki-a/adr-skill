@@ -3,44 +3,44 @@ status: Accepted
 proposed-on: "2026-09-13"
 ---
 
-# ADR-001: Use front matter for ADR metadata
+# ADR-001: ADRのメタデータにフロントマターを使う
 
 ## Context
 
 ### Problem to Solve
 
-ADR status, proposal start date, and replacement references describe the record's lifecycle. Keeping them in a `## Status` section places document metadata alongside the reasoning and requires tools to locate that section before extracting fields.
+ADRの状態、提案開始日、置換先への参照は、記録のライフサイクルを表す。これらを `## Status` 節に置くと、文書のメタデータが判断理由と並ぶことになり、ツールは値を取り出す前にその節を探す必要がある。
 
-We need a clear metadata boundary while retaining fast, deterministic validation, a small skill prompt, and a Python standard-library-only runtime. The proposal start date must survive edits so that stale proposals remain detectable.
+高速で決定論的な検証、短いスキル指示、Python標準ライブラリだけで動く実行環境を維持しながら、メタデータの範囲を明確にしたい。滞留した提案を検出できるよう、編集しても提案開始日は保持する必要がある。
 
 ### Considered Options and Trade-offs
 
-| Option | Benefits | Costs and limitations |
+| 選択肢 | 利点 | コストと制約 |
 | --- | --- | --- |
-| Keep the Markdown Status section | Already implemented; visible as ordinary Markdown; no migration needed. | Mixes metadata with reasoning and requires support for our custom section layout. |
-| Use front matter with a restricted YAML schema | Separates lifecycle fields from the body; exposes a conventional boundary to other tools; keeps parsing small and dependency-free. | Requires an explicit syntax contract and migration; some renderers hide metadata; does not support arbitrary YAML. |
-| Use front matter with a general YAML parser | Supports richer metadata and more YAML authoring styles. | Adds a runtime dependency and schema/serialization decisions that are unnecessary for three scalar fields. |
+| MarkdownのStatus節を維持する | 実装済みで、通常のMarkdownとして表示でき、移行が不要。 | メタデータと判断理由が混在し、独自の節構成への対応が必要になる。 |
+| 限定したYAMLスキーマのフロントマターを使う | ライフサイクルの項目を本文から分離し、他のツールにも一般的な区切りを示せる。小さなパーサーを依存なしで維持できる。 | 構文の明文化と移行が必要。一部のレンダラーではメタデータが表示されず、任意のYAMLには対応できない。 |
+| 汎用YAMLパーサーでフロントマターを扱う | より豊富なメタデータと多様なYAMLの記法に対応できる。 | 実行時の依存が増え、3つのスカラー項目には不要なスキーマやシリアライズ方法の判断が必要になる。 |
 
-The current Status section is already structured, so moving it does not by itself promise a large speed or token reduction. The main gains are separation of concerns and a conventional metadata location. [MADR makes a similar placement decision](https://adr.github.io/madr/decisions/0013-use-yaml-front-matter-for-meta-data.html), while noting rendering limitations.
+現在のStatus節も構造化されているため、配置を変えるだけで大幅な高速化やトークン削減ができるとは限らない。主な利点は、関心事の分離と、一般的な場所へのメタデータの配置である。[MADRも同様の配置を採用している](https://adr.github.io/madr/decisions/0013-use-yaml-front-matter-for-meta-data.html)が、表示上の制約にも言及している。
 
 ## Decision
 
-Use a restricted YAML front-matter block at the beginning of every ADR. Store required `status` and `proposed-on` fields there, plus `superseded-by` when the status is Superseded. Remove the Status section from the body; retain Context, Decision, and Consequences.
+すべてのADRの先頭に、限定したYAML構文のフロントマターを置く。必須の `status` と `proposed-on` を格納し、状態がSupersededの場合は `superseded-by` も記録する。本文からStatus節を取り除き、Context、Decision、Consequencesを残す。
 
-Accept unique, supported lowercase keys and simple scalar strings, either unquoted or enclosed in matching single or double quotes. Reject comments, escapes, empty values, unknown keys, collections, multiline values, tags, anchors, and aliases. The formatter orders the keys, double-quotes the date, and emits status and replacement filenames without quotes. This is a documented YAML subset, not a general YAML implementation.
+対応する小文字キーを重複なしで記述し、値は単純なスカラー文字列とする。引用符なし、または対応する一重引用符・二重引用符で囲んだ値を受け付ける。コメント、エスケープ、空値、未知のキー、コレクション、複数行値、タグ、アンカー、エイリアスは拒否する。formatterはキーの順序を統一し、日付を二重引用符で囲み、状態と置換先ファイル名を引用符なしで出力する。対応範囲は明文化したYAMLの一部に限定し、汎用YAMLの実装とはしない。
 
-Preserve the five status values and the existing proposal-age rule: a Proposed record fails when its age reaches the configured limit, which defaults to 30 calendar days. Keep `proposed-on` as the proposal start date rather than an update timestamp. Unlike this field, [MADR 4.0.0's date field](https://github.com/adr/madr/blob/4.0.0/template/adr-template.md) denotes the last update.
+5種類の状態と、既存の提案滞留ルールを維持する。Proposedの記録は、提案からの経過日数が設定した上限に達すると検証に失敗する。既定の上限は30暦日とする。`proposed-on` は更新日時ではなく、提案開始日として保持する。この項目とは異なり、[MADR 4.0.0のdate項目](https://github.com/adr/madr/blob/4.0.0/template/adr-template.md)は最終更新日を表す。
 
-Require explicit migration of legacy Status sections, preserving their values and dates. Do not auto-convert unrelated documents or maintain duplicate metadata locations.
+旧Status節は、値と日付を保持したうえで明示的に移行する。無関係な文書を自動変換せず、メタデータを複数の場所で重複管理しない。
 
 ## Consequences
 
-The authoring template now separates lifecycle metadata from the problem, options, decision, and resulting effects. The runtime remains dependency-free, and metadata parsing has a clear boundary.
+作成用テンプレートでは、ライフサイクルのメタデータが課題、選択肢、決定、採用後の影響から分離される。実行時の依存は増えず、メタデータを解析する範囲も明確になる。
 
-Existing ADRs using the old Status section fail validation until explicitly migrated. The repository's comparison fixture is migrated with this change. External ADRs are not modified automatically.
+旧Status節を使う既存ADRは、明示的に移行するまで検証に失敗する。この変更に合わせて、リポジトリの比較用フィクスチャも移行する。外部のADRは自動変更しない。
 
-The restricted schema needs deliberate extension if richer metadata becomes necessary. A renderer may hide front matter, so any future publishing integration must make lifecycle status visible to readers. A conventional metadata block alone does not guarantee interoperability with another tool's field names or status definitions.
+より豊富なメタデータが必要になった場合は、限定したスキーマを明示的に拡張する必要がある。レンダラーによってはフロントマターが表示されないため、将来の公開機能との連携では、読者がライフサイクルの状態を確認できるようにする必要がある。一般的なメタデータブロックを使うだけでは、他のツールの項目名や状態定義との相互運用性は保証できない。
 
-Validation still cannot establish real agreement, detect falsified proposal dates, or evaluate architectural reasoning. Full lint still reads the body. Speed and input cost must be measured rather than inferred from the new layout; short or already-loaded ADRs may remain cheaper to read directly.
+検証によって実際の合意の存在を確認したり、提案日の改ざんを検出したり、アーキテクチャ上の判断を評価したりすることは引き続きできない。全件lintでは本文も読み取る。速度と入力コストは、新しい配置から推測せず実測する必要がある。短いADRや既に読み込んだADRは、そのまま読む方が低コストな場合がある。
 
-Verification covers scalar syntax, duplicate and unknown keys, missing delimiters, legacy-format rejection, unchanged date semantics, body preservation, and formatter idempotence. The CLI also validates this ADR. [The benchmark](../../reports/benchmark.json) records local measurements, not an LLM billing or quality guarantee.
+検証では、スカラー構文、キーの重複と未知のキー、区切りの欠落、旧形式の拒否、日付の意味の維持、本文の保持、formatterの冪等性を確認する。このADR自体もCLIで検証する。[ベンチマーク](../../reports/benchmark.json)はローカルでの測定結果を記録するもので、LLMの課金額や品質を保証するものではない。
