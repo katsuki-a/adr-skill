@@ -1,0 +1,3 @@
+interface:
+  display_name: "ADR Writer"
+  short_description: "ADRをテンプレートで作成し、形式・ステータス・提案の滞留を高速検証"

@@ -1,0 +1,53 @@
+{
+  "measured_on": "2026-09-13",
+  "python": "3.9.6",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "repeats": 7,
+  "method": "New Python process each time; sequential scans; OS filesystem cache not cleared; no LLM calls.",
+  "timing": {
+    "1": {
+      "median_ms": 29.783,
+      "max_ms": 30.49,
+      "stdout_bytes": 35
+    },
+    "100": {
+      "median_ms": 40.679,
+      "max_ms": 41.381,
+      "stdout_bytes": 37
+    },
+    "1000": {
+      "median_ms": 135.891,
+      "max_ms": 199.163,
+      "stdout_bytes": 38
+    }
+  },
+  "authoring_cli_ms": {
+    "new_median": 30.307,
+    "format_and_lint_median": 30.228
+  },
+  "input_proxy": {
+    "encoding": "o200k_base (proxy, not a claim about the active model tokenizer)",
+    "components": {
+      "skill": 289,
+      "generated_template_and_path": 59,
+      "validation_stdout": 13,
+      "command_text": 38
+    },
+    "skill_flow_total": 399,
+    "comparison": {
+      "short_adr": {
+        "one_existing_adr": 82,
+        "three_existing_adrs": 246,
+        "ten_existing_adrs": 820,
+        "break_even_records": 5
+      },
+      "fixture_adr": {
+        "one_existing_adr": 393,
+        "three_existing_adrs": 1179,
+        "ten_existing_adrs": 3930,
+        "break_even_records": 2
+      }
+    },
+    "limitations": "Not billing or an LLM quality/latency A/B test. Excludes transport wrappers, cache pricing, common decision context/output; long paths and failures add tokens. Small or already-loaded ADR baselines can be cheaper."
+  }
+}
