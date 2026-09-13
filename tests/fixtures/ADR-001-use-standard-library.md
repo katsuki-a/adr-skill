@@ -1,9 +1,9 @@
-# 0001. ADR検証に標準ライブラリを使う
+---
+status: Accepted
+proposed-on: "2026-09-01"
+---
 
-## Status
-
-Status: Accepted
-Proposed-on: 2026-09-01
+# ADR-001: ADR検証に標準ライブラリを使う
 
 ## Context
 

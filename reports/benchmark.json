@@ -6,45 +6,79 @@
   "method": "New Python process each time; sequential scans; OS filesystem cache not cleared; no LLM calls.",
   "timing": {
     "1": {
-      "median_ms": 29.783,
-      "max_ms": 30.49,
+      "median_ms": 33.809,
+      "max_ms": 36.581,
       "stdout_bytes": 35
     },
     "100": {
-      "median_ms": 40.679,
-      "max_ms": 41.381,
+      "median_ms": 48.604,
+      "max_ms": 54.009,
       "stdout_bytes": 37
     },
     "1000": {
-      "median_ms": 135.891,
-      "max_ms": 199.163,
+      "median_ms": 146.578,
+      "max_ms": 159.908,
       "stdout_bytes": 38
     }
   },
+  "index_timing": {
+    "1": {
+      "median_ms": 52.544,
+      "max_ms": 82.224,
+      "stdout_bytes": 91
+    },
+    "100": {
+      "median_ms": 38.43,
+      "max_ms": 38.879,
+      "stdout_bytes": 95
+    },
+    "1000": {
+      "median_ms": 80.328,
+      "max_ms": 82.754,
+      "stdout_bytes": 97
+    }
+  },
+  "format_with_index_timing": {
+    "1": {
+      "median_ms": 40.008,
+      "max_ms": 44.755,
+      "stdout_bytes": 35
+    },
+    "100": {
+      "median_ms": 38.895,
+      "max_ms": 42.214,
+      "stdout_bytes": 35
+    },
+    "1000": {
+      "median_ms": 80.412,
+      "max_ms": 88.683,
+      "stdout_bytes": 35
+    }
+  },
   "authoring_cli_ms": {
-    "new_median": 30.307,
-    "format_and_lint_median": 30.228
+    "new_median": 33.961,
+    "format_and_lint_median": 34.46
   },
   "input_proxy": {
     "encoding": "o200k_base (proxy, not a claim about the active model tokenizer)",
     "components": {
-      "skill": 289,
-      "generated_template_and_path": 59,
+      "skill": 403,
+      "generated_template_and_path": 75,
       "validation_stdout": 13,
-      "command_text": 38
+      "command_text": 39
     },
-    "skill_flow_total": 399,
+    "skill_flow_total": 530,
     "comparison": {
       "short_adr": {
         "one_existing_adr": 82,
         "three_existing_adrs": 246,
         "ten_existing_adrs": 820,
-        "break_even_records": 5
+        "break_even_records": 7
       },
       "fixture_adr": {
-        "one_existing_adr": 393,
-        "three_existing_adrs": 1179,
-        "ten_existing_adrs": 3930,
+        "one_existing_adr": 392,
+        "three_existing_adrs": 1176,
+        "ten_existing_adrs": 3920,
         "break_even_records": 2
       }
     },

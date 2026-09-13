@@ -1,13 +1,19 @@
-# {{id}}. {{title}}
+---
+status: Proposed
+proposed-on: "{{proposed_on}}"
+---
 
-## Status
-
-Status: Proposed
-Proposed-on: {{proposed_on}}
+# {{id}}: {{title}}
 
 ## Context
 
-{{context}}
+### Problem to Solve
+
+{{problem}}
+
+### Considered Options and Trade-offs
+
+{{options}}
 
 ## Decision
 
